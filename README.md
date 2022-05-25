@@ -70,7 +70,7 @@
       };
   }
   ```
-  Burada *type cast* işlemi koşul kontrolünde gerçekleştirildiğinden dolayı nesnenin metotlarını doğrudan çağırabiliyoruz. Ayrıca `switch` ifadesi bir *expression* olduğundan dolayı doğrudan `return` ile kullanılabilir. (JDK 14'ten beri)
+  Burada *type cast* işlemi koşul kontrolünde gerçekleştirildiğinden dolayı nesnenin metotlarını doğrudan çağırabiliyoruz. Ayrıca `switch` ifadesi artık bir *expression* olduğundan dolayı doğrudan `return` ile kullanılabiliyor.
 
   Bu özellik henüz *preview* aşamasında. Hala revize edilmekte ve ileride değişikliğe uğrayabilir. Şu anda bu özelliği kullanan kodu çalıştırmanın yolu derleyiciye *preview* özelliklerini kullanmasını söylemektir:
   ```sh
@@ -78,9 +78,22 @@
   ```
 
 
+- "Sealed class" kavramı eklendi. Eğer bir sınıftan türetilebilecek alt sınıfların belirlemeye ihtiyaç varsa bunu artık sınıf tanımında `sealed` ve `permits` anahtar kelimelerini kullanarak yapabiliyoruz:  
+  ```java
+  public abstract sealed class Sekil permits Daire, Kare, Dikdortgen {
+      ...
+  }
+  ```
 
-- "Sealed class" kavramı eklendi. Artık bir sınıftan türetilebilecek alt sınıfların hangileri olabileceği belirlenebiriyor.
+  `Sekil` sınıfını sadece `Daire`, `Kare` ve `Dikdortgen` sınıfları genişletebilir (`extends` anahtar kelimesi).
+
+  > **Not:** Alt sınıflar tanımlanırken `final`, `sealed` ya da `non-sealed` ifadelerinden birinin kullanılması gerekiyor.
  
+### Teknik değişiklikler
+- *Floating point* sayıların işlenmesinde katı kuralların yeniden varsayılan hale getirilmesi. Bilimsel hesaplamalar yapan uygulamalar için tutarlılığı sağlamak adına yapılan bir düzenleme.
+- Rassal sayı üreteçlerinde(*PRNGs*) iyileştirmeler
+- Java Sanal Makinesi'nin *MacOS/AArch64* mimarisine uyarlanması. *Mac* sistemlerinde *low-level* işlemlerde stabilite ve performans artışı sağlayacaktır. <!-- Mac sahibi olmadığım için kesin yorum yapamıyorum buna. -->
+- Bakım maliyetleri kullanılan alanlardaki faydalarına denk düşmediği için Java'nın *Ahead-of-Time* ve *Just-in-Time* derleyicilerinin desteği sonlandırıldı.
 
  <!--
  Bora Özdoğan
