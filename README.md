@@ -1,26 +1,67 @@
 # Java 8'den Sonra Gelen Değişiklikler
 
+Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerinde gelen değişiklileri listelediğim çalışmadır.
+
 ## Java 11 Değişiklikleri
 
 ### Genel Değişiklikler
 - Java'nın resmi yazılım geliştirme kiti (Oracle JDK) artık lisanslanmadan ticari amaçla kullanılamıyor. Onun yerine OpenJDK kullanılabilir.
+- *JavaFX* arayüz çatısı artık standart kütüphanenin bir parçası değil.
+- *Java EE* ve *CORBA* modülleri kaldırıldı.
 
 
 ### Dil Özelliklerindeki Değişiklikler
+- `var` anahtar kelimesi eklendi. Uzun değişken tanımlamalarında kendini tekrar etme durumunun önüne geçildi.
+  - . .
+    ```txt
+    HashMap<String, String> dictionary = new HashMap<String, String>();
+    ```
+
+    yerine
+    
+    ```java
+    var dictionary = new HashMap<String, String>();
+    ```
 - *Lambda* ifadelerinde yerel değişken tanımlaması benzeri tanımlamalara destek verildi. Bu sayede *lambda* parametlerelerinde *annotation* yapıları kullanılabilir oldu:  
   - . . `(@Deprecated var it) -> it.toUpperCase()`
 
 ### Standart Kütüphanedeki Değişiklikler
 - `String` nesnelerine yeni metotlar eklendi:
-    - `#.isBlank()`
-    - `#.lines()`
-    - `#.strip()` <!--  #.trim() ile farkını anlat -->
-    - `#.stripLeading()`
-    - `#.repeat(int)`
-- Standart kütüphaneye HTTP istemcisi eklendi. `java.net.http` paketinde
-  <!-- örnek kod iliştir -->
+    - `#.isBlank()` -> `bool`:  
+      *String* nesnesinin boş olup olmadığını döndürür.
+    - `#.lines()` -> ` java.util.stream.Stream<String>`:  
+      Nesneyi satır ayraçlarından bölerek bir `Stream` nesnesi içerisine yerleştirir. Sonrasında Java 8 ile gelen *Stream API* özelliklerinden yararlanılabilir.
+    - `#.strip()` -> `String`:
+       *String* nesnesinin başındaki ve sonundaki boşlukları kırpar. `trim` metodundan farklı olarak *Unicode* standardında tanımlanan boşluk karakterlerini de tanır.
+    - `#.stripLeading()` -> `String`:
+      `strip` ile aynı ama sadece başlangıç kısmında işlem yapar.
+    - `#.repeat(int)` -> `String`:
+      Karakter dizisini belirtilen sayıda tekrar eder.
+- Standart kütüphaneye HTTP istemcisi eklendi. `java.net.http` paketinde.
+  - . .
+    ```java
+    HttpClient httpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_2)
+            .connectTimeout(Duration.ofSeconds(20))
+            .build();
+    HttpRequest httpRequest = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://www.example.com"))
+            .build();
+    HttpResponse httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+    System.out.println(httpResponse.body());
+    ```
 - Standart kütüphaneye dosya içeriğini `String` biçiminde okuma ve yazmayı sağlayan yardımcı fonksiyonlar eklendi. `java.io.Files` sınıfına ait `readString` ve `writeString` fonksiyonları.
-- Koleksiyon sınıflarına `toArray()` metodu eklendi.
+- Koleksiyon sınıflarına *Generics* kullanan `toArray(IntFunction<T[]>)` metodu eklendi. Bu sayede anlamsız bir nesne oluşturmadan dizinin tipi belirlenebiliyor.
+  - . .
+    ```java
+    String[] arr = list.toArray(new String[1]);
+    ```
+    yerine
+    
+    ```java
+    String[] arr = list.toArray(String[]::new);
+    ```
 
 ### Teknik Araçlardaki Değişiklikler
 - Java komut satırı derleyicisi artık uygulamayı tek aşamada kaynak koddan derleyip çalıştırabiliyor:  
@@ -30,8 +71,8 @@
 - Epsilon adında, sadece hafızada yer ayırma işlemi yapıp "çöp toplama" işlemini yapmayan *"No-Op"* bir *garbage collector* eklendi. Bazı test ortamları için yararlı olabilecek deneysel bir özellik.
 
 ### Diğer Değişiklikler
-- TLS sürümü 1.3'e güncellendi. <!-- detay ver -->
-- Düşük gecikmeli bir başka *garbage collector* eklendi. İsmi "ZGC".
+- *Transport Layer Security* protokolü [standardın](https://www.rfc-editor.org/info/rfc8446) 1.3 versiyonuna güncellendi. TLS kullanan uygulamalarda güvenlik ve performans artışı sağlamak amaçlanıyor.
+- "ZGC" adında Düşük gecikmeli bir *garbage collector* eklendi.
 - Unicode 10 standardı desteklenmeye başlandı. {&#x20BF;}
 
 
@@ -90,10 +131,20 @@
   > **Not:** Alt sınıflar tanımlanırken `final`, `sealed` ya da `non-sealed` ifadelerinden birinin kullanılması gerekiyor.
  
 ### Teknik değişiklikler
+
 - *Floating point* sayıların işlenmesinde katı kuralların yeniden varsayılan hale getirilmesi. Bilimsel hesaplamalar yapan uygulamalar için tutarlılığı sağlamak adına yapılan bir düzenleme.
 - Rassal sayı üreteçlerinde(*PRNGs*) iyileştirmeler
 - Java Sanal Makinesi'nin *MacOS/AArch64* mimarisine uyarlanması. *Mac* sistemlerinde *low-level* işlemlerde stabilite ve performans artışı sağlayacaktır. <!-- Mac sahibi olmadığım için kesin yorum yapamıyorum buna. -->
 - Bakım maliyetleri kullanılan alanlardaki faydalarına denk düşmediği için Java'nın *Ahead-of-Time* ve *Just-in-Time* derleyicilerinin desteği sonlandırıldı.
+
+
+### Yeni *Incubator* Modülleri
+
+Standart kütüphaneye eklenme sürecinde olan modüllerdir. 
+
+- Vector API
+- Foreign Function & Memory API
+
 
  <!--
  Bora Özdoğan
