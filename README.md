@@ -260,8 +260,9 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
 Standart kütüphaneye eklenme sürecinde olan modüllerdir. 
 
 - Vector API:
-  
+  İşlemcilerin vektör tabanlı komutlarını tutarlı bir şekilde kullanabilmeye yararan araçları barındıran modüldür. Birden fazla veride aynı işlem yapılan hesaplamaların optimizasyonu için kullanılan *"single instruction, multiple data"* türünde paralel işleme imkanı vermektedir. <!-- Detaylı bilgi: https://openjdk.java.net/jeps/338 -->
 - Foreign Function & Memory API:
+  Platforma bağımlı prosedürleri kullanaya ve verileri işlemeye yarayan Java API'si. Bu iş için mevcut alternatif olan <abbr title="Java Native Interface">JNI</abbr>'nin yerine geçmesi planlanıyor. Daha güvenli ve kullanımı kolay bir sistem olarak geliştiriliyor. <!-- Detaylı bilgi: https://openjdk.java.net/jeps/412 --> 
   
 
 
