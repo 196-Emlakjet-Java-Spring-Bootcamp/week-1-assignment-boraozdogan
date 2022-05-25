@@ -1,6 +1,6 @@
 # Java 8'den Sonra Gelen Değişiklikler
 
-Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerinde gelen değişiklileri listelediğim çalışmadır. Daha sonra referans olarak da kullanmak istediğimden örneklere de yer verdim.
+Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerinde gelen değişiklileri listelediğim çalışmadır. Daha sonra referans olarak kullanmak istediğimden örneklere de yer verdim.
 
 ## Java 11 Değişiklikleri
 
@@ -265,9 +265,9 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
 ### Yeni *Incubator* Modülleri
 Standart kütüphaneye eklenme sürecinde olan modüllerdir. 
 
-- Vector API:
+- Vector API:  
   İşlemcilerin vektör tabanlı komutlarını tutarlı bir şekilde kullanabilmeye yararan araçları barındıran modüldür. Birden fazla veride aynı işlem yapılan hesaplamaların optimizasyonu için kullanılan *"single instruction, multiple data"* türünde paralel işleme imkanı vermektedir. <!-- Detaylı bilgi: https://openjdk.java.net/jeps/338 -->
-- Foreign Function & Memory API:
+- Foreign Function & Memory API:  
   Platforma bağımlı prosedürleri kullanaya ve verileri işlemeye yarayan Java API'si. Bu iş için mevcut alternatif olan <abbr title="Java Native Interface">JNI</abbr>'nin yerine geçmesi planlanıyor. Daha güvenli ve kullanımı kolay bir sistem olarak geliştiriliyor. <!-- Detaylı bilgi: https://openjdk.java.net/jeps/412 --> 
   
 
