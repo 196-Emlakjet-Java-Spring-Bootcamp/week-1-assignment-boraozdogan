@@ -80,6 +80,74 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
 ## Java 17 Değişiklikleri
 
 ### Dildeki değişiklikler
+
+- Metin bloğu desteği eklendi<!-- sonunda -->. Çok satırlı *string* ifadeleri artık (`"""`) arasına alınarak daha okunaklı yazılabiliyor:
+  ```java
+  String html = """
+                <html>
+                    <head>
+                        <title>Gömülü HTML Kodu Örneği</title>
+                    </head>
+                    <body>
+                        <p>Merhaba Dünya!</p>
+                    </body>
+                </html>
+                """;
+  ```
+
+- "Sealed class" kavramı eklendi. Eğer bir sınıftan türetilebilecek alt sınıfların belirlemeye ihtiyaç varsa bunu artık sınıf tanımında `sealed` ve `permits` anahtar kelimelerini kullanarak yapabiliyoruz:  
+  ```java
+  public abstract sealed class Sekil permits Daire, Kare, Dikdortgen {
+      ...
+  }
+  ```
+
+  `Sekil` sınıfını sadece `Daire`, `Kare` ve `Dikdortgen` sınıfları genişletebilir (`extends` anahtar kelimesi).
+
+  > **Not:** Alt sınıflar tanımlanırken `final`, `sealed` ya da `non-sealed` ifadelerinden birinin kullanılması gerekiyor.
+
+- Yeni çeşit `switch` ifadeleleri eklendi. `case` kelimesinden sonra "`:`"  yerine "`->`" işleci kullanılarak daha okunaklı kod yazılabiliyor. (Yeni `switch` ifadelerinde `break` anahtar kelimesi kullanılmıyor.)
+  - . .
+    ```java
+    switch (gun) {
+        case PAZARTESI:
+        case CUMA:
+        case PAZAR:
+            System.out.println(6);
+            break;
+        case SALI:
+            System.out.println(7);
+            break;
+        case PERSEMBE:
+        case CUMARTESI:
+            System.out.println(8);
+            break;
+        case CARSAMBA:
+            System.out.println(9);
+            break;
+    }
+    ```
+    yerine
+
+    ```java
+    switch (gun) {
+        case PAZARTESI, CUMA, PAZAR -> System.out.println(6);
+        case SALI                   -> System.out.println(7);
+        case PERSEMBE, CUMARTESI    -> System.out.println(8);
+        case CARSAMBA               -> System.out.println(9);
+    }
+    ```
+  Ayrıca bu `switch` ifadeleri *expression* statüsünde olduğu için değer döndürecek şekilde de kullanılabilir:
+  - . .
+   ```java
+   int harfSayisi = switch (gun) {
+        case SALI, CUMA           -> 4;
+        case PAZAR                -> 5;
+        case CARSAMBA, PERSEMBE   -> 8;
+        case PAZARTESI, CUMARTESI -> 9;
+  };
+   ```
+
 - `switch` ifadeleri için *"pattern matching"* desteği getirildi. Bu bazı koşullu ifadeleri daha okunaklı hale getirecek bir özellik. Örneğin tipini bilmediğimiz bir nesnenin sayı cinsinden değerini almak için şöyle bir fonksiyon yazabiliriz:  
   ```java
   static double getNumberValue(Object o) {
@@ -111,24 +179,13 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
       };
   }
   ```
-  Burada *type cast* işlemi koşul kontrolünde gerçekleştirildiğinden dolayı nesnenin metotlarını doğrudan çağırabiliyoruz. Ayrıca `switch` ifadesi artık bir *expression* olduğundan dolayı doğrudan `return` ile kullanılabiliyor.
+  Burada *type cast* işlemi koşul kontrolünde gerçekleştirildiğinden dolayı nesnenin metotlarını doğrudan çağırabiliyoruz.
 
   Bu özellik henüz *preview* aşamasında. Hala revize edilmekte ve ileride değişikliğe uğrayabilir. Şu anda bu özelliği kullanan kodu çalıştırmanın yolu derleyiciye *preview* özelliklerini kullanmasını söylemektir:
   ```sh
   java --enable-preview --source 17 PatternMatchingDeneme.java
   ```
 
-
-- "Sealed class" kavramı eklendi. Eğer bir sınıftan türetilebilecek alt sınıfların belirlemeye ihtiyaç varsa bunu artık sınıf tanımında `sealed` ve `permits` anahtar kelimelerini kullanarak yapabiliyoruz:  
-  ```java
-  public abstract sealed class Sekil permits Daire, Kare, Dikdortgen {
-      ...
-  }
-  ```
-
-  `Sekil` sınıfını sadece `Daire`, `Kare` ve `Dikdortgen` sınıfları genişletebilir (`extends` anahtar kelimesi).
-
-  > **Not:** Alt sınıflar tanımlanırken `final`, `sealed` ya da `non-sealed` ifadelerinden birinin kullanılması gerekiyor.
  
 ### Teknik değişiklikler
 
