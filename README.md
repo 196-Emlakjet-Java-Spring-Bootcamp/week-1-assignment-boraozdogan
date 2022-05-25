@@ -1,6 +1,6 @@
 # Java 8'den Sonra Gelen Değişiklikler
 
-Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerinde gelen değişiklileri listelediğim çalışmadır.
+Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerinde gelen değişiklileri listelediğim çalışmadır. Daha sonra referans olarak da kullanmak istediğimden örneklere de yer verdim.
 
 ## Java 11 Değişiklikleri
 
