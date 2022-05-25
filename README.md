@@ -198,6 +198,9 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
                 throw new java.lang.IllegalArgumentException(
                     String.format("Geçersiz uzunluklar: %f, %f", genislik, yukseklik));
             }
+
+            this.genislik = genislik;
+            this.yukseklik = yukseklik;
         }
     }
     ```
@@ -206,7 +209,10 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
     > ```java
     > record Dikdortgen(double genislik, double yukseklik) {
     >     public Dikdortgen {
-    >         ...
+    >         if (genislik <= 0 || yukseklik <= 0) {
+    >             throw new java.lang.IllegalArgumentException(
+    >                 String.format("Geçersiz uzunluklar: %f, %f", genislik, yukseklik));
+    >         }
     >     }
     > }
     > ```
