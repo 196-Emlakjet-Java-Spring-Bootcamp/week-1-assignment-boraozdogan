@@ -9,7 +9,6 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
 - *JavaFX* arayüz çatısı artık standart kütüphanenin bir parçası değil.
 - *Java EE* ve *CORBA* modülleri kaldırıldı.
 
-
 ### Dil Özelliklerindeki Değişiklikler
 - `var` anahtar kelimesi eklendi. Uzun değişken tanımlamalarında kendini tekrar etme durumunun önüne geçildi.
   - . .
@@ -80,8 +79,24 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
 ## Java 17 Değişiklikleri
 
 ### Dildeki değişiklikler
+- `instanceof` işleci için *pattern matching* özelliği eklendi. *Type cast* için gereksiz kod yazılmasının önüne geçildi:
+  - . .
+    ```java
+    if (obj instanceof String) {
+        String s = (String) obj;
+        ...
+    }
+    ```
+    
+    yerine
 
-- Metin bloğu desteği eklendi<!-- sonunda -->. Çok satırlı *string* ifadeleri artık (`"""`) arasına alınarak daha okunaklı yazılabiliyor:
+    ```java
+    if (obj instanceof String s) {
+        ...
+    }
+    ```
+
+- Metin bloğu desteği eklendi. Çok satırlı *string* ifadeleri artık (`"""`) arasına alınarak daha okunaklı yazılabiliyor:
   ```java
   String html = """
                 <html>
@@ -148,6 +163,54 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
   };
    ```
 
+- *Record* sınıfları eklendi. Artık, veri taşımakla yükümlü sınıflar `record` kelimesi kullanılarak daha zahmetsiz oluşturulabiliyor.
+  - . .
+    ```java
+    public final class Dikdortgen {
+        private final double genislik;
+        private final double yukseklik;
+
+        public Dikdortgen(double genislik, double yukseklik) {
+            this.genislik = genislik;
+            this.yukseklik = yukseklik;
+            if (genislik <= 0 || yukseklik <= 0) {
+                throw new java.lang.IllegalArgumentException(
+                    String.format("Geçersiz uzunluklar: %f, %f", genislik, yukseklik));
+        }
+
+        double genislik() { return this.genislik; }
+        double yukseklik()  { return this.yukseklik; }
+
+
+        // Tanımlanması gereken metotlar...
+        public boolean equals...
+        public int hashCode...
+        public String toString() {...}
+    }
+    ```
+
+    yerine
+
+    ```java
+    record Dikdortgen(double genislik, double yukseklik) {
+        public Dikdortgen(double genislik, double yukseklik) {
+            if (genislik <= 0 || yukseklik <= 0) {
+                throw new java.lang.IllegalArgumentException(
+                    String.format("Geçersiz uzunluklar: %f, %f", genislik, yukseklik));
+            }
+        }
+    }
+    ```
+
+    > **Not:** Hatadan kaçınmak için *record* sınıflarında *constructor* tanımlarken parametre listesi atlanabilir. Yukarıdaki örnek şu şekilde de yazılabilir:
+    > ```java
+    > record Dikdortgen(double genislik, double yukseklik) {
+    >     public Dikdortgen {
+    >         ...
+    >     }
+    > }
+    > ```
+
 - `switch` ifadeleri için *"pattern matching"* desteği getirildi. Bu bazı koşullu ifadeleri daha okunaklı hale getirecek bir özellik. Örneğin tipini bilmediğimiz bir nesnenin sayı cinsinden değerini almak için şöyle bir fonksiyon yazabiliriz:  
   ```java
   static double getNumberValue(Object o) {
@@ -185,22 +248,21 @@ Java Deveplopment Kit'in <abbr title="Long-Term Support">LTS</abbr> sürümlerin
   ```sh
   java --enable-preview --source 17 PatternMatchingDeneme.java
   ```
-
  
-### Teknik değişiklikler
-
+### Teknik Değişiklikler
 - *Floating point* sayıların işlenmesinde katı kuralların yeniden varsayılan hale getirilmesi. Bilimsel hesaplamalar yapan uygulamalar için tutarlılığı sağlamak adına yapılan bir düzenleme.
 - Rassal sayı üreteçlerinde(*PRNGs*) iyileştirmeler
-- Java Sanal Makinesi'nin *MacOS/AArch64* mimarisine uyarlanması. *Mac* sistemlerinde *low-level* işlemlerde stabilite ve performans artışı sağlayacaktır. <!-- Mac sahibi olmadığım için kesin yorum yapamıyorum buna. -->
+- Java Sanal Makinesi'nin *MacOS/AArch64* mimarisine uyarlanması.
 - Bakım maliyetleri kullanılan alanlardaki faydalarına denk düşmediği için Java'nın *Ahead-of-Time* ve *Just-in-Time* derleyicilerinin desteği sonlandırıldı.
 
 
 ### Yeni *Incubator* Modülleri
-
 Standart kütüphaneye eklenme sürecinde olan modüllerdir. 
 
-- Vector API
-- Foreign Function & Memory API
+- Vector API:
+  
+- Foreign Function & Memory API:
+  
 
 
  <!--
